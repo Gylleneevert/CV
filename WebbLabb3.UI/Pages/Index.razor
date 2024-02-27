@@ -1,0 +1,542 @@
+﻿@page "/"
+@using WebbLabb3.UI.Models
+@using WebbLabb3.UI.Data
+@inject IHttpClientFactory ClientFactory;
+
+
+<AuthorizeView Context="Context">
+    <NotAuthorized Context="notLoggedIn">
+        <div id="headerInfo" class="container d-grid  col-sm-12 " style="">
+            <div class="row d-flex align-content-between">
+            <div id="imgDiv" class=" m-3 col-sm-4 col-md-4">
+                <img class="cvImg" src="/Robert4.jpg" alt="Picture of me" style="max-width: 20rem;"/>
+            </div>
+
+
+                <div id="infoBox" class=" d-grid col-sm-7 col-md-7 me-1 mb-3 p-5">
+                @foreach (var about in AboutList)
+                { 
+                    <h2 class="text-center">@about.FirstName @about.LastName</h2>
+                   
+                    <h4 class="text-center">@about.Title</h4>
+                    <h4 class="text-center">KORT OM MIG</h4>
+                    <p class="text-center">@about.Description</p>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div id="skillContainer" class="container">
+        <div class="row">
+            <h2 id="kompetenser" class="col-sm-12 text-center">KOMPETENSER</h2>
+            <table class="table table-hover col-sm-12 col-md-4">
+
+                <thead>
+                <tr>
+                    <th class="fw-bloder col-sm-12" scope="col">Kunskapsområde</th>
+                </tr>
+                </thead>
+
+                @foreach (var skill in SkillsList)
+                {
+                    <tbody>
+                    <tr class="table-active">
+                        <td class="fw-bold col-sm-12">@skill.SkillName</td>
+                    </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="projectContainer" class="container">
+        <div class="row">
+            <h2 id="project" class="text-center col-sm-12">PROJECT</h2>
+            <table class="table table-hover col-sm-12  col-md-4">
+
+                    <thead>
+                        <tr>
+                            <th class="fw-bolder col-sm-4" scope="col">Project Namn</th>
+                            <th class="fw-bolder col-sm-4" scope="col">Språk</th>
+                            <th class="fw-bolder col-sm-4" scope="col">Link</th>
+                        </tr>
+                    </thead>
+                            
+                @foreach (var project in ProjectList)
+                {
+                        <tbody>
+                    <tr class="table-active">
+                        <td class="fw-bold col-sm-4">@project.ProjectName</td>
+                        <td class="fw-bold col-sm-4">@project.Description</td>
+                        <td class="fw-bold col-sm-4"><a class="githubLink" href="@project.GithubUrl"><img id="githubIcon" src="/GithubIcon.jpg" alt="Github Icon"/></a></td>
+                    </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+
+
+    <div id="educationContainer" class="container">
+        <div class="row">
+        <h2 id="utbildningar" class="col-sm-12 text-center">UTBILDNINGAR</h2>
+            <table id="educationTable" class="table table-hover col-sm-12 col-md-4">
+
+                <thead>
+                <tr>
+                    <th class="fw-bolder col-sm-3" scope="col">Skola</th>
+                    <th class="fw-bolder col-sm-3" scope="col">Title</th>
+                    <th class="fw-bolder col-sm-3" scope="col">År</th>
+                    <th class="fw-bolder col-sm-3" scope="col">Kurser</th>
+                    
+
+
+                </tr>
+                </thead>
+                @foreach(var education in EducationList)
+                {
+                    <tbody>
+                    <tr class="table-active">
+                        
+                        <td class="fw-bold col-sm-3">@education.SchoolName</td>
+                        <td class="fw-bold col-sm-4">@education.Title</td>
+                        <td class="fw-bold col-sm-2">@education.Year</td>
+                        @if (education.Id == 1)
+                        {
+                            @foreach (var courses in CourseList)
+                            {
+                                <div>
+                                    <td class="fw-bold col-sm-3">@courses.CourseName</td>
+                                </div>
+                            }
+                        }
+                        
+                    </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id="experienceContainer" class="container">
+        <div class="row">
+        <h2 id="utbildningar" class="col-sm-12 text-center">ARBETSERFARENHET</h2>
+            <table id="experienceTable" class="table table-hover col-sm-12 col-md-4">
+
+                <thead>
+                <tr>
+                    <th class="fw-bolder col-sm-3" scope="col">Företag</th>
+                    <th class="fw-bolder col-sm-3" scope="col">Title</th>
+                    <th class="fw-bolder col-sm-3" scope="col">Uppgifter</th>
+                    <th class="fw-bolder col-sm-3" scope="col">År</th>
+
+
+                </tr>
+                </thead>
+                @foreach (var experience in ExperienceList)
+                {
+                    <tbody>
+                    <tr class="table-active">
+                        <td class="fw-bold col-sm-3">@experience.CompanyName</td>
+                        <td class="fw-bold col-sm-4">@experience.Title</td>
+                        <td class="fw-bold col-sm-2">@experience.Description</td>
+                        <td class="fw-bold col-sm-3">@experience.Year</td>
+                    </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+
+
+
+
+        <div id="contactContainer" class="container">
+            <div class="row">
+                <h2 id="contact" class="text-center col-sm-12">KONTAKTA MIG</h2>
+
+                <table class="table table-hover col-sm-12 col-md-4">
+
+                    <thead>
+                    <tr class="row">
+                        <th scope="col" class="fw-bolder col-sm-4">Telefon nummer</th>
+                        <th scope="col" class="fw-bolder col-sm-4">Email</th>
+                        <th scope="col" class="fw-bolder col-sm-4">LinkedIn</th>
+                    </tr>
+                    </thead>
+
+                    @if (ContactList != null && ContactList.Count > 0)
+                    {
+                        <tbody>
+                        <tr class="table-active row">
+                            <td class="fw-bold col-sm-4">@ContactList[0].PhoneNumber</td>
+                            <td class="fw-bold col-sm-4">@ContactList[0].Email</td>
+                            <td class="fw-bold col-sm-4"><a href="https://www.linkedin.com/in/robert-jakobsen/"><img id="linkedInIcon" src="Linkedin.png" alt="LinkedIn Icon"/>Robert Jakobsen</a></td>
+                        </tr>
+                        </tbody>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="px-4 auth col-12 text-center">
+            <LoginDisplay />
+            
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    </NotAuthorized>
+
+
+<Authorized Context="loggedIn">
+        
+<EditForm Model="@_about" >
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_about" @onchange="OnAboutSelected">
+            <option>Välj en användare</option>
+            @foreach (var about in AboutList)
+            {
+                <option value="@about.Id">@about.FirstName, @about.LastName</option>
+            }
+                        
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <InputText id="firstName" @bind-Value="@_about.FirstName" class="form-control" />
+        <ValidationMessage For="@(() => _about.FirstName)" />
+    </div>
+            
+
+    <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <InputText id="lastName" @bind-Value="@_about.LastName" class="form-control" />
+        <ValidationMessage For="@(() => _about.LastName)" />
+    </div>
+            
+    <div class="form-group">
+                <label for="title">Title:</label>
+                <InputText id="title" @bind-Value="@_about.Title" class="form-control" />
+                <ValidationMessage For="@(() => _about.Title)" />
+    </div>
+    <div class="form-group">
+        <label for="aboutDescription">Description:</label>
+        <InputText id="aboutDescription" @bind-Value="@_about.Description" class="form-control" />
+        <ValidationMessage For="@(() => _about.Description)" />
+    </div>
+    <div>
+        <button type="button" @onclick="PostAboutTask" class="btn btn-primary">Create</button>
+        <button type="button" @onclick="PutAboutTask" class="btn btn-primary">Update</button>
+        <button type="button" @onclick="DeleteAboutTask" class="btn btn-primary">Delete</button>
+    </div>
+</EditForm>
+            
+        
+<EditForm Model="@_skills">
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_skills" @onchange="OnSkillSelected" >
+            <option>Välj en skill</option>
+            @foreach (var skill in SkillsList)
+            {
+                <option value="@skill.Id">@skill.SkillName</option>
+            }
+                        
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="skillName">Skill:</label>
+        <InputText id="skillName" @bind-Value="@_skills.SkillName" class="form-control" />
+        <ValidationMessage For="@(() => _skills.SkillName)" />
+                
+    </div>
+            
+    <div>
+        <label for="skillDescription">Description:</label>
+        <InputText id="skillDescription" @bind-Value="@_skills.Description" class="form-control" />
+        <ValidationMessage For="@(() => _skills.Description)" />
+    </div>
+
+    <button type="button" @onclick="CreateSkill" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="UpdateSkill" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteSelectedSkill" class="btn btn-primary">Delete</button>
+</EditForm>
+        
+<EditForm Model="@_projects">
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_projects" @onchange="OnProjectSelected">
+            <option value="">Välj ett project</option>
+            @foreach (var project in ProjectList)
+            {
+                <option value="@project.Id">@project.GithubUrl</option>
+            }
+                        
+        </select>
+    </div>
+            
+    <div class="form-group">
+        <label for="projectName">Project Name:</label>
+        <InputText id="projectName" @bind-Value="@_projects.ProjectName" class="form-control" />
+        <ValidationMessage For="@(() => _projects.ProjectName)" />
+    </div> 
+    
+    <div class="form-group">
+        <label for="projectDescription">Project Description:</label>
+        <InputText id="projectDescription" @bind-Value="@_projects.Description" class="form-control" />
+        <ValidationMessage For="@(() => _projects.Description)" />
+    </div> 
+
+    <div class="form-group">
+        <label for="projectGithub">Project Link:</label>
+        <InputText id="projectGithub" @bind-Value="@_projects.GithubUrl" class="form-control" />
+        <ValidationMessage For="@(() => _projects.GithubUrl)" />
+    </div>
+
+    <button type="button" @onclick="PostProject" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="PutProject" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteProject" class="btn btn-primary">Delete</button>
+</EditForm>
+<EditForm Model="@_education" >
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_education" @onchange="OnEducationSelected">
+            <option>Välj en utbildning</option>
+            @foreach (var education in EducationList)
+            {
+                <option value="@education.Id">@education.SchoolName</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="educationSchool">School Name:</label>
+        <InputText id="educationSchool" @bind-Value="@_education.SchoolName" class="form-control" />
+        <ValidationMessage For="@(() => _education.SchoolName)" />
+    </div>
+
+    <div class="form-group">
+        <label for="educationTitle">Title:</label>
+        <InputText id="educationTitle" @bind-Value="@_education.Title" class="form-control" />
+        <ValidationMessage For="@(() => _education.Title)" />
+    </div>
+
+            
+            
+    <div class="form-group">
+        <label for="educationYear">Year:</label>
+        <InputText id="educationYear" @bind-Value="@_education.Year" class="form-control" />
+        <ValidationMessage For="@(() => _education.Year)" />
+    </div>
+
+    <button type="button" @onclick="PostEducation" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="PutEducation" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteEducation" class="btn btn-primary">Delete</button>
+</EditForm>
+<EditForm Model="@_experience">
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_experience" @onchange="OnExperienceSelected">
+            <option>Välj en arbetserfarenhet</option>
+            @foreach (var experience in ExperienceList)
+            {
+                <option value="@experience.Id">@experience.CompanyName</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="experienceCompany">Company Name:</label>
+        <InputText id="experienceCompany" @bind-Value="@_experience.CompanyName" class="form-control" />
+        <ValidationMessage For="@(() => _experience.CompanyName)" />
+    </div>
+
+    <div class="form-group">
+        <label for="experienceTitle">Title:</label>
+        <InputText id="experienceTitle" @bind-Value="@_experience.Title" class="form-control" />
+        <ValidationMessage For="@(() => _experience.Title)" />
+    </div>
+
+    <div class="form-group">
+        <label for="experienceYear">Year:</label>
+        <InputText id="experienceYear" @bind-Value="@_experience.Year" class="form-control" />
+        <ValidationMessage For="@(() => _experience.Year)" />
+    </div>
+
+            <div class="form-group">
+                <label for="experienceDescription">Description:</label>
+                <InputText id="experienceDescription" @bind-Value="@_experience.Description" class="form-control" />
+                <ValidationMessage For="@(() => _experience.Description)" />
+            </div>
+            
+    <button type="button" @onclick="PostExperience" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="PutExperience" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteExperience" class="btn btn-primary">Delete</button>
+
+</EditForm>
+        
+<EditForm Model="@_contact">
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_contact" @onchange="OnContactSelected">
+            <option>Välj en contact</option>
+            @foreach (var contact in ContactList)
+            {
+                <option value="@contact.Id">@contact.Email, @contact.PhoneNumber, @contact.LinkedInUrl</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="contactNumber">Phone number:</label>
+        <InputText id="contactNumber" @bind-Value="@_contact.PhoneNumber" class="form-control" />
+        <ValidationMessage For="@(() => _contact.PhoneNumber)" />
+    </div>
+    <div class="form-group">
+        <label for="contactEmail">Email:</label>
+        <InputText id="contactEmail" @bind-Value="@_contact.Email" class="form-control" />
+        <ValidationMessage For="@(() => _contact.Email)" />
+    </div>
+
+    <div class="form-group">
+        <label for="contactLinkedIn">LinkedIn:</label>
+        <InputText id="contactLinkedIn" @bind-Value="@_contact.LinkedInUrl" class="form-control" />
+        <ValidationMessage For="@(() => _contact.LinkedInUrl)" />
+    </div>
+            
+
+    <button type="button" @onclick="PostContact" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="PutContact" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteContact" class="btn btn-primary">Delete</button>
+
+</EditForm>
+        
+<EditForm Model="@_courses">
+    <DataAnnotationsValidator />
+            
+    <div>
+        <select class="form-control" value="@_courses" @onchange="OnCourseSelected">
+            <option>Välj en kurs</option>
+            @foreach (var course in CourseList)
+            {
+                <option value="@course.Id">@course.CourseName</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="courseName">Course Name:</label>
+        <InputText id="courseName" @bind-Value="@_courses.CourseName" class="form-control" />
+        <ValidationMessage For="@(() => _courses.CourseName)" />
+    </div>
+
+    <button type="button" @onclick="PostCourse" class="btn btn-primary">Create</button>
+    <button type="button" @onclick="PutCourse" class="btn btn-primary">Update</button>
+    <button type="button" @onclick="DeleteCourse" class="btn btn-primary">Delete</button>
+</EditForm>
+
+
+
+</Authorized>
+
+</AuthorizeView>
+
+
+    
+
+
+
+
+
+
+
+
+
+
+@code {
+    
+    private List<About> AboutList { get; set; } = new List<About>();
+    private List<Contact> ContactList { get; set; } = new List<Contact>();
+    private List<Courses> CourseList { get; set; } = new List<Courses>();
+    private List<Education> EducationList { get; set; } = new List<Education>();
+    private List<Experience> ExperienceList { get; set; } = new List<Experience>();
+    private List<Projects> ProjectList { get; set; } = new List<Projects>();
+    private List<Skills> SkillsList { get; set; } = new List<Skills>();
+
+    //HTTP
+    private HttpClient httpClient { get; set; } = new HttpClient();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // httpClient = ClientFactory.CreateClient("WebbLabb3.API");
+        AboutList = await httpClient.GetFromJsonAsync<List<About>>("https://webblabb3api.azurewebsites.net/Abouts");
+        ContactList = await httpClient.GetFromJsonAsync<List<Contact>>("https://webblabb3api.azurewebsites.net/contacts");
+        CourseList = await httpClient.GetFromJsonAsync<List<Courses>>("https://webblabb3api.azurewebsites.net/courses");
+        EducationList = await httpClient.GetFromJsonAsync<List<Education>>("https://webblabb3api.azurewebsites.net/educations");
+        ExperienceList = await httpClient.GetFromJsonAsync<List<Experience>>("https://webblabb3api.azurewebsites.net/experiences");
+        ProjectList = await httpClient.GetFromJsonAsync<List<Projects>>("https://webblabb3api.azurewebsites.net/projects");
+        SkillsList = await httpClient.GetFromJsonAsync<List<Skills>>("https://webblabb3api.azurewebsites.net/skills");
+    }
+
+
+    private About _about = new About();
+    private Contact _contact = new Contact();
+    private Courses _courses = new Courses();
+    private Education _education = new Education();
+    private Experience _experience = new Experience();
+    private Projects _projects = new Projects();
+    private Skills _skills = new Skills();
+
+
+}
+    
+    
+
+    
+
+
+
+    
+    
+
+
+    
+
+    
+    
+
+    
+    
+
+
+
